@@ -24,21 +24,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Gradient, damit Text lesbar bleibt */
             background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
             position: absolute;
             top: 0; width: 100%; z-index: 10;
-            pointer-events: none; /* Klicks gehen durch */
+            pointer-events: none;
         }
         
         .tab-bar {
             display: flex; gap: 20px; 
             font-weight: 700; font-size: 1.1rem;
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            color: rgba(255,255,255,0.7); /* Inaktiv */
+            color: rgba(255,255,255,0.7);
         }
         .active-tab { 
-            color: #fff; /* Aktiv */
+            color: #fff;
             border-bottom: 2px solid #fff; 
             padding-bottom: 4px; 
         }
@@ -67,24 +66,12 @@
             z-index: 1;
         }
         
-        /* Video UI Layer (Play, Time, Sound) */
+        /* Video UI Layer */
         .video-ui-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
             pointer-events: none;
         }
         
-        .play-icon-top {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 60px; height: 60px;
-            background: rgba(0,0,0,0.2);
-            backdrop-filter: blur(2px);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            color: rgba(255,255,255,0.8); font-size: 24px;
-            opacity: 0; /* Erst unsichtbar, könnte man bei Pause einblenden */
-            animation: pulse 2s infinite;
-        }
-
         .video-duration {
             position: absolute; top: 20px; right: 20px;
             background: rgba(0,0,0,0.4); color: white;
@@ -129,7 +116,7 @@
             padding: 20px;
             color: white;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            max-width: 75%; /* Platz für Side Icons lassen */
+            max-width: 75%;
         }
         .username { font-weight: 700; font-size: 1.05rem; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid white; background-size: cover; background-position: center; background-color: #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
@@ -150,7 +137,7 @@
 
         /* Side Actions */
         .side-actions {
-            position: absolute; right: 10px; bottom: 200px; /* Höher wegen Sound Disc */
+            position: absolute; right: 10px; bottom: 200px;
             display: flex; flex-direction: column; gap: 20px; align-items: center;
             z-index: 5;
         }
@@ -181,7 +168,7 @@
         .btn-skip { color: #333; }
         .btn-like { color: #ed4956; }
 
-        /* Screens (Weißer Hintergrund für Menüs) */
+        /* Screens */
         .screen {
             background: #ffffff;
             width: 100%; height: 100%; position: absolute; top: 0; left: 0;
@@ -190,9 +177,31 @@
         }
         .hidden { display: none !important; }
 
-        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; color: #262626; }
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; color: #262626; }
         p { color: #8e8e8e; line-height: 1.5; font-size: 1rem; max-width: 500px; margin-bottom: 30px;}
-        select { padding: 15px; font-size: 1rem; background: #fafafa; color: #262626; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 30px; width: 100%; max-width: 300px; -webkit-appearance: none; }
+        
+        /* NEU: Profil-Auswahl Liste statt Dropdown */
+        .profile-list {
+            display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;
+        }
+        .profile-card {
+            background: #f8f8f8;
+            border: 1px solid #dbdbdb;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex; align-items: center; gap: 15px;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
+            text-align: left;
+        }
+        .profile-card:active { transform: scale(0.98); background: #f0f0f0; }
+        .profile-card:hover { border-color: #aaa; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        .p-icon { font-size: 2rem; }
+        .p-info { display: flex; flex-direction: column; }
+        .p-title { font-weight: 700; font-size: 1.1rem; color: #262626; }
+        .p-desc { font-size: 0.9rem; color: #8e8e8e; }
+
         .btn-start { background-color: #0095f6; color: white; border: none; border-radius: 4px; padding: 10px 40px; font-weight: 600; font-size: 1rem; box-shadow: 0 2px 5px rgba(0,149,246,0.3); }
         .data-code { font-family: monospace; background: #f0f0f0; padding: 20px; color: #262626; font-size: 1.2rem; margin: 20px 0; border: 1px solid #dbdbdb; border-radius: 6px; user-select: all; cursor: pointer; }
 
@@ -209,17 +218,36 @@
 
     <!-- INTRO -->
     <div id="intro-screen" class="screen">
-        <div style="font-size: 4rem; margin-bottom: 20px;">👤</div>
-        <h1>Profil erstellen</h1>
-        <p>Wähle ein User-Profil aus, das dich interessiert. <br><br>Klicke auf "Start" und entscheide dann bei jedem Video: Liken (♥) oder Weiter (✖)?</p>
+        <div style="font-size: 3.5rem; margin-bottom: 10px;">👋</div>
+        <h1>Profil wählen</h1>
+        <p style="margin-bottom: 25px;">Wähle ein User-Profil aus, das dich interessiert. <br>Tippe auf eine Karte, um zu starten und entscheide dann bei jedem Video: Liken (♥) oder Weiter (✖)?</p>
         
-        <select id="userType">
-            <option value="Foodie">🍳 Food & Genuss</option>
-            <option value="Mover">🏃 Sport & Action</option>
-            <option value="Creator">🎨 Kreativ & DIY</option>
-        </select>
+        <!-- NEUE PROFIL-AUSWAHL -->
+        <div class="profile-list">
+            <div class="profile-card" onclick="startApp('Foodie')">
+                <div class="p-icon">🍳</div>
+                <div class="p-info">
+                    <span class="p-title">Food & Genuss</span>
+                    <span class="p-desc">Rezepte, Café-Vibes, Ästhetik</span>
+                </div>
+            </div>
 
-        <button class="btn-start" onclick="startApp()">Start</button>
+            <div class="profile-card" onclick="startApp('Mover')">
+                <div class="p-icon">🏃</div>
+                <div class="p-info">
+                    <span class="p-title">Sport & Action</span>
+                    <span class="p-desc">Parkour, Skate, Adrenalin</span>
+                </div>
+            </div>
+
+            <div class="profile-card" onclick="startApp('Creator')">
+                <div class="p-icon">🎨</div>
+                <div class="p-info">
+                    <span class="p-title">Kreativ & DIY</span>
+                    <span class="p-desc">Foto-Hacks, Technik, Kunst</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- FEED -->
@@ -311,9 +339,9 @@
         let userProfile = "";
 
         // --- FUNKTIONEN ---
-        window.startApp = function() {
-            const select = document.getElementById('userType');
-            userProfile = select.options[select.selectedIndex].value;
+        // startApp nimmt jetzt das Profil direkt entgegen (durch Klick auf die Karte)
+        window.startApp = function(selectedProfile) {
+            userProfile = selectedProfile;
             
             document.getElementById('intro-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
