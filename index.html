@@ -203,7 +203,7 @@
         .p-desc { font-size: 0.9rem; color: #8e8e8e; }
 
         .btn-start { background-color: #0095f6; color: white; border: none; border-radius: 4px; padding: 10px 40px; font-weight: 600; font-size: 1rem; box-shadow: 0 2px 5px rgba(0,149,246,0.3); }
-        .data-code { font-family: monospace; background: #f0f0f0; padding: 20px; color: #262626; font-size: 1.2rem; margin: 20px 0; border: 1px solid #dbdbdb; border-radius: 6px; user-select: all; cursor: pointer; }
+        .data-code { font-family: monospace; background: #f0f0f0; padding: 20px; color: #262626; font-size: 1.2rem; margin: 20px 0 10px 0; border: 1px solid #dbdbdb; border-radius: 6px; user-select: all; }
 
     </style>
 </head>
@@ -228,7 +228,7 @@
                 <div class="p-icon">🍳</div>
                 <div class="p-info">
                     <span class="p-title">Food & Genuss</span>
-                    <span class="p-desc">Lifestyle, Taste, Travel, Relaxing, Inspo</span>
+                    <span class="p-desc">Lifestyle, Taste, Travel, Relaxing, Reading</span>
                 </div>
             </div>
 
@@ -273,11 +273,13 @@
     <div id="result-screen" class="screen hidden">
         <div style="font-size: 4rem; margin-bottom: 10px; color: #0095f6;">✅</div>
         <h1>Fertig!</h1>
-        <p>Kopiere die Ergebnisse mit Klick auf den Kasten und füge sie in die Excel-Tabelle auf LMS ein.</p>
+        <p>Deine Ergebnisse sind bereit. Kopiere die Ergebnisse mit Klick auf den Button und füge sie in die Tabelle "Auswertung - SocialMedia-Simulation" ein.</p>
         
-        <div class="data-code" id="outputCode" onclick="copyToClipboard()">...</div>
+        <div class="data-code" id="outputCode">...</div>
         
-        <button class="btn-start" style="background: white; color: #262626; border: 1px solid #dbdbdb; margin-top: 20px;" onclick="location.reload()">Neustart</button>
+        <button id="copyBtn" class="btn-start" onclick="copyToClipboard()" style="margin-bottom: 15px;">Code kopieren</button>
+        
+        <button class="btn-start" style="background: white; color: #262626; border: 1px solid #dbdbdb;" onclick="location.reload()">Neustart</button>
     </div>
 
     <script>
@@ -422,14 +424,43 @@
         
         window.copyToClipboard = function() {
             const text = document.getElementById('outputCode').innerText;
+            const btn = document.getElementById('copyBtn');
+            
             if(navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(function() {
-                    alert("Ergebnis kopiert!");
+                    // Feedback im Button anzeigen
+                    const originalText = btn.innerText;
+                    btn.innerText = "Kopiert! ✅";
+                    btn.style.backgroundColor = "#27c4f5"; // Helles Feedback-Blau
+                    
+                    setTimeout(function() {
+                        btn.innerText = "Code kopieren";
+                        btn.style.backgroundColor = ""; // Farbe zurücksetzen (CSS class übernimmt wieder)
+                    }, 2000);
                 });
             } else {
-                alert("Bitte Code manuell kopieren.");
+                // Fallback: Text auswählen
+                const range = document.createRange();
+                range.selectNode(document.getElementById('outputCode'));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                
+                // Kurzes Feedback im Button auch bei Fallback
+                btn.innerText = "Bitte manuell kopieren";
+                setTimeout(function() { btn.innerText = "Code kopieren"; }, 3000);
             }
         };
+
+        // --- PRELOADER ---
+        // Lädt Bilder im Hintergrund, sobald die Seite geöffnet wird
+        (function preloadImages() {
+            contentData.forEach(function(item) {
+                const img = new Image();
+                img.src = item.image;
+                const ava = new Image();
+                ava.src = item.avatar;
+            });
+        })();
     </script>
 </body>
 </html>
